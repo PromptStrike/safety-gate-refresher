@@ -28,9 +28,9 @@ jobs:
 
       - name: Check API health
         run: |
-          sleep 5   
+          sleep 5
           curl --fail http://localhost:8000/health
-      
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
