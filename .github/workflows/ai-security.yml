@@ -27,13 +27,10 @@ jobs:
           sleep 10
 
       - name: Check API health
-         run: |
-    for i in {1..5}; do
-      curl --fail http://localhost:8000/health && break
-      echo "Retrying..."
-      sleep 3
-    done
-
+        run: |
+          sleep 5   
+          curl --fail http://localhost:8000/health
+      
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
