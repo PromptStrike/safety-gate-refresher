@@ -38,8 +38,15 @@ async def chat(req: ChatRequest):
         ],
         "temperature": 0.2,
     }
+
+        try:
     async with httpx.AsyncClient(timeout=180) as client:
         r = await client.post(OLLAMA_URL, json=payload)
         r.raise_for_status()
         data = r.json()
-    return ChatResponse(reply=data["choices"][0]["message"]["content"])
+        reply = data["choices"][0]["message"]["content"]
+except Exception as e:
+    print(f"Error calling LLM: {e}")
+    reply = "Sorry, I couldn't process that request."
+
+return ChatResponse(reply=reply)
