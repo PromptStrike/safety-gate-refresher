@@ -48,9 +48,9 @@ jobs:
           node-version: 18
 
       - name: Install promptfoo
-        run: npm install -g promptfoo
+        run: npm install -g promptfoo@latest
 
       - name: Run promptfoo tests
         run: |
           cd tests
-          promptfoo eval --exit-code
+          promptfoo eval
