@@ -52,5 +52,5 @@ jobs:
 
       - name: Run promptfoo tests
         run: |
-          cd tests/promptfoo
+          cd tests
           promptfoo eval --exit-code
