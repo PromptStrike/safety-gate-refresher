@@ -40,7 +40,7 @@ jobs:
       - name: Check API health
         run: |
           sleep 5
-          curl --fail http://127.0.0.1:8000/health
+          curl --fail http://127.0.0.1:8000/healthz
 
       - name: Setup Node
         uses: actions/setup-node@v4
