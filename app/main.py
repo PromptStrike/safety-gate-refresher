@@ -1,6 +1,6 @@
 import os
 import httpx
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 # -------- Configuration --------
@@ -49,6 +49,6 @@ async def chat(req: ChatRequest):
             reply = data["choices"][0]["message"]["content"]
     except Exception as e:
         print(f"Error calling LLM: {e}")
-        reply = "Sorry, I couldn't process that request."
+        raise HTTPException(status_code=500, detail=f"LLM call failed: {e}")
 
     return ChatResponse(reply=reply)
