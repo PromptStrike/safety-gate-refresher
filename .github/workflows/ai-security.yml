@@ -35,6 +35,23 @@ jobs:
       - name: Health check
         run: curl --fail http://localhost:8000/healthz
 
+      - name: Debug SUT with real request
+        env:
+          OLLAMA_URL: ${{ secrets.GROQ_URL }}
+          MODEL_NAME: "llama3-8b-8192"
+          LLM_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          echo "=== Env vars ==="
+          echo "OLLAMA_URL: $OLLAMA_URL"
+          echo "MODEL_NAME: $MODEL_NAME"
+          echo "LLM_API_KEY length: ${#LLM_API_KEY}"
+          echo "=== Test /chat ==="
+          curl -v -X POST http://localhost:8000/chat \
+            -H "Content-Type: application/json" \
+            -d '{"message": "hi"}' 2>&1 | head -50
+          echo "=== Uvicorn logs ==="
+          cat /tmp/uvicorn.log
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
