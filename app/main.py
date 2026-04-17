@@ -6,6 +6,7 @@ from pydantic import BaseModel
 # -------- Configuration --------
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/v1/chat/completions")
 MODEL_NAME = os.getenv("MODEL_NAME", "llama3.2:1b")
+LLM_API_KEY = os.getenv("LLM_API_KEY", "ollama")
 
 SYSTEM_PROMPT = """You are a helpful customer support assistant for Acme Corp.
 Follow these rules strictly:
@@ -40,8 +41,9 @@ async def chat(req: ChatRequest):
     }
 
     try:
+        headers = {"Authorization": f"Bearer {LLM_API_KEY}", "Content-Type": "application/json"}
         async with httpx.AsyncClient(timeout=180) as client:
-            r = await client.post(OLLAMA_URL, json=payload)
+            r = await client.post(OLLAMA_URL, json=payload, headers=headers)
             r.raise_for_status()
             data = r.json()
             reply = data["choices"][0]["message"]["content"]
