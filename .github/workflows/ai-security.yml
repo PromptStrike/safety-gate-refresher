@@ -50,7 +50,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"message": "hi"}' 2>&1 | head -50
           echo "=== Uvicorn logs ==="
-          cat /tmp/uvicorn.log
+          cat /tmp/uvicorn.log || echo "(no log yet)"
 
       - name: Setup Node
         uses: actions/setup-node@v4
