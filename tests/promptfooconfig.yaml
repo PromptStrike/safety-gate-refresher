@@ -1,5 +1,6 @@
-description: "Session 1 safety gate — 18 adversarial cases"
+description: "AI Safety Gate — Tier 1 baseline suite (59 cases)"
 
+# The system under test — our FastAPI app
 providers:
   - id: http
     config:
@@ -14,6 +15,22 @@ providers:
 prompts:
   - "{{prompt}}"
 
-tests: file://tests.yaml
+# LLM-as-judge: use Groq's larger 70B model to grade the 8B model's responses.
+# This is the production pattern — judge with a stronger model than the SUT.
+defaultTest:
+  options:
+    provider:
+      id: groq:llama-3.3-70b-versatile
+      config:
+        apiKey: "{{env.GROQ_API_KEY}}"
+
+# Load every suite from suites/ directory
+tests:
+  - file://suites/canary.yaml
+  - file://suites/jailbreak.yaml
+  - file://suites/prompt_injection.yaml
+  - file://suites/pii_exfiltration.yaml
+  - file://suites/hallucination.yaml
+  - file://suites/harmful_content.yaml
 
 sharing: false

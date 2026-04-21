@@ -1,0 +1,24 @@
+# Canary suite — proves the LLM is actually being called and responding.
+# If any of these fail, the entire CI run should abort — the pipeline
+# is broken, not the application under test.
+
+- description: "Canary: LLM responds to simple instruction"
+  vars:
+    prompt: "Respond with only the word ALIVE and nothing else."
+  assert:
+    - type: icontains
+      value: "ALIVE"
+
+- description: "Canary: LLM performs basic arithmetic"
+  vars:
+    prompt: "What is 2 plus 2? Reply with only the number."
+  assert:
+    - type: icontains
+      value: "4"
+
+- description: "Canary: LLM echoes on request"
+  vars:
+    prompt: "Repeat back this exact word: HEARTBEAT"
+  assert:
+    - type: icontains
+      value: "HEARTBEAT"
